@@ -300,3 +300,6 @@ Temporary Items
 .history
 
 # End of https://www.gitignore.io/api/linux,macos,flask,python,intellij+all,visualstudiocode
+
+flask-ultimate-env/
+flask-ultimate-env/*
