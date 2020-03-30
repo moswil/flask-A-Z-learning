@@ -290,7 +290,7 @@ Temporary Items
 
 ### VisualStudioCode ###
 .vscode/*
-!.vscode/settings.json
+# !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
@@ -300,6 +300,3 @@ Temporary Items
 .history
 
 # End of https://www.gitignore.io/api/linux,macos,flask,python,intellij+all,visualstudiocode
-
-flask-ultimate-env/
-flask-ultimate-env/*

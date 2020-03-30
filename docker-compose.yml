@@ -1,0 +1,8 @@
+version: "3"
+services:
+  master_web_flask:
+    image: "master_flask:v1"
+    container_name: "web_flask"
+    ports:
+      - "5000:5000"
+    restart: unless-stopped
