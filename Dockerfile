@@ -6,4 +6,4 @@ ADD . /app
 # Install all required dependencies
 RUN pip install -r requirements.txt
 EXPOSE 5000
-CMD ["python", "main.py"]
+CMD gunicorn -b :5000 main:app

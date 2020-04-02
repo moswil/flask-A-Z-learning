@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-image_name=master_flask
-image_version=v1
+source image_name_version.sh
+
 echo "Checking if image $image_name exists on localhost"
 image=$(docker images | grep $image_name | grep $image_version)
 

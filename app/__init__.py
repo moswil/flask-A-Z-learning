@@ -1,4 +1,6 @@
 from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 
 import config
 
@@ -12,5 +14,8 @@ elif app.config.get('ENV') == 'development':
 else:
     app.config.from_object(config.TestingConfig)
 
+db = SQLAlchemy(app=app)
+migrate = Migrate(app=app, db=db)
 
-from app import routes  # noqa
+
+from app import routes, models  # noqa
