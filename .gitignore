@@ -303,3 +303,5 @@ Temporary Items
 
 # Environment variables
 *.env
+# No pushing of databases
+*.db
