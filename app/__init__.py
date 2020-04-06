@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
+from flask_migrate import Migrate, MigrateCommand
+from flask_script import Manager
 
 import config
 
@@ -15,7 +16,10 @@ else:
     app.config.from_object(config.TestingConfig)
 
 db = SQLAlchemy(app=app)
-migrate = Migrate(app=app, db=db)
 
 
 from app import routes, models  # noqa
+
+migrate = Migrate(app=app, db=db)
+manager = Manager(app=app)
+manager.add_command('db', MigrateCommand)

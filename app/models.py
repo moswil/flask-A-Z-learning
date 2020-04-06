@@ -1,3 +1,5 @@
+import datetime
+
 from app import db
 
 
@@ -5,7 +7,7 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
-    password = db.Column(db.String(128))
+    password = db.Column(db.String(128), nullable=False)
     posts = db.relationship(
         'Post',
         backref='user',
@@ -26,8 +28,8 @@ tags = db.Table('post_tags',
 class Post(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     title = db.Column(db.String(128), nullable=False)
-    text = db.Column(db.String(255))
-    publish_date = db.Column(db.DateTime())
+    text = db.Column(db.String(255), nullable=False)
+    publish_date = db.Column(db.DateTime(), default=datetime.datetime.now)
     comments = db.relationship(
         'Comment',
         backref='post',
@@ -48,9 +50,9 @@ class Post(db.Model):
 
 class Comment(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
-    name = db.Column(db.String(128))
-    text = db.Column(db.Text())
-    date = db.Column(db.DateTime())
+    name = db.Column(db.String(128), nullable=False)
+    text = db.Column(db.Text(), nullable=False)
+    date = db.Column(db.DateTime(), default=datetime.datetime.now)
     post_id = db.Column(db.Integer(), db.ForeignKey('post.id'))
 
     def _init__(self, name, text=None, date=None):
@@ -61,7 +63,7 @@ class Comment(db.Model):
 
 class Tag(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
-    title = db.Column(db.String(255), nullable=False)
+    title = db.Column(db.String(255), nullable=False, unique=True)
 
     def __init__(self, title):
         self.title = title
