@@ -5,8 +5,8 @@ from app.users.models import User
 
 class UserModelTestCase(unittest.TestCase):
     def setUp(self):
-        self.user = User(username='moswil',
-                         email='moses@gmail.com', password='Password')
+        self.user = User(email='moses@gmail.com', firstname='Moses',
+                         lastname='Ongwenyi', password='Password')
 
     def tearDown(self):
         self.user = None
@@ -23,6 +23,6 @@ class UserModelTestCase(unittest.TestCase):
         self.assertFalse(self.user.verify_password('password'))
 
     def test_password_salts_are_random(self):
-        user = User(username='moswil', email='moses@gmail.com',
-                    password='Password')
+        user = User(email='moses@gmail.com', firstname='Moses',
+                    lastname='Ongwenyi', password='Password')
         self.assertTrue(self.user.password_hash != user.password_hash)
