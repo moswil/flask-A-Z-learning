@@ -2,7 +2,6 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate, MigrateCommand
 from flask_script import Manager
-from flask_bcrypt import Bcrypt
 from flask_marshmallow import Marshmallow
 
 import flask_restful as restful
@@ -26,7 +25,6 @@ else:
 rest_api = restful.Api(app=app, prefix='/api/v1')
 db = SQLAlchemy(app=app)
 ma = Marshmallow(app=app)
-bcrypt = Bcrypt(app=app)
 
 LOGGER = Logger().get_logger()
 
@@ -37,7 +35,7 @@ migrate = Migrate(app=app, db=db)
 manager = Manager(app=app)
 manager.add_command('db', MigrateCommand)
 
-from app.users.models import AppUser  # noqa
+from app.users.models import User  # noqa
 
 
 # initialize flask-login
@@ -48,7 +46,7 @@ def init_login():
     # Create user loader function
     @login_manager.user_loader
     def load_user(user_id):
-        return db.session.query(AppUser).get(user_id)
+        return db.session.query(User).get(user_id)
 
 
 init_login()

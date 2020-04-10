@@ -1,12 +1,12 @@
 from app import ma
-from app.users.models import AppUser
+from app.users.models import User
 
 
-class AppUserSchema(ma.ModelSchema):
+class UserSchema(ma.ModelSchema):
 
     class Meta:
-        model = AppUser
+        model = User
         # fields to expose
-        fields = ("id", "username", "email", "password")
-        load_only = ("password",)
+        fields = ("id", "username", "email", "password_hash")
+        load_only = ("password_hash",)
         dump_only = ('id',)

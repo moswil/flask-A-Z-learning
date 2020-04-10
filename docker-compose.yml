@@ -3,6 +3,9 @@ services:
   master_web_flask:
     image: "master_flask:v1"
     container_name: "web_flask"
+    command: python main.py
+    volumes:
+      - .:/app
     ports:
       - "5000:5000"
     restart: unless-stopped

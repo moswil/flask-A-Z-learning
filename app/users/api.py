@@ -4,8 +4,8 @@ from flask import g, request, abort
 from flask_restful import Resource
 from sqlalchemy.exc import IntegrityError
 
-from app.users.serializers import AppUserSchema
-from app.users.models import AppUser
+from app.users.serializers import UserSchema
+from app.users.models import User
 
 from app.utils.errors import EMAIL_IN_USE, USER_NAME_IN_USE
 
@@ -15,13 +15,13 @@ def user_info(user, roles):
 
 
 class UserAPI(Resource):
-    app_user_schema = AppUserSchema()
+    app_user_schema = UserSchema()
 
     def get(self):
-        # user = db.session.query(AppUser).filter(
-        #     AppUser.id == g.current_user['id']).first()
+        # user = db.session.query(User).filter(
+        #     User.id == g.current_user['id']).first()
 
-        user = db.session.query(AppUser).filter(AppUser.id == 1).first()
+        user = db.session.query(User).filter(User.id == 1).first()
         return self.app_user_schema.dump(user)
 
     def post(self):
@@ -42,8 +42,8 @@ class AuthenticationAPI(Resource):
 
 
 class UsersAPI(Resource):
-    app_user_schema = AppUserSchema(many=True)
+    app_user_schema = UserSchema(many=True)
 
     def get(self):
-        users = db.session.query(AppUser).all()
+        users = db.session.query(User).all()
         return self.app_user_schema.dump(users)

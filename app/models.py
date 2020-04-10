@@ -33,7 +33,7 @@ class Post(db.Model):
     comments = db.relationship(
         'Comment',
         backref='post',
-        lazy='dynamics'
+        lazy='dynamic'
     )
     user_id = db.Column(db.Integer(), db.ForeignKey('user.id'))
     tags = db.relationship(
