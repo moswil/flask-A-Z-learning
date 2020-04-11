@@ -1,6 +1,6 @@
 from app import db, LOGGER
 
-from flask import g, request, abort
+from flask import g, request, url_for
 from flask_restful import Resource
 from sqlalchemy.exc import IntegrityError
 
@@ -19,7 +19,7 @@ Dear {firstname} {lastname},
 
 Thank you for creating a new {system} account. Please use the following link to verify your email address:
 
-{host}/verifyEmail?token={token}
+{host}{endpoint_url}?token={token}
 
 Kind Regards,
 {organisation}
@@ -66,10 +66,13 @@ class UserAPI(Resource):
                       lastname=user.lastname,
                       system='Phren Test',
                       organisation='Phren Org',
-                      host='phren.co.ke',
+                      host=request.url_root[:-1],
+                      endpoint_url=url_for('verifyemailapi'),
                       token=user.verify_token
                   ))
         LOGGER.debug(f"Sent verification email to {user.email}")
+
+        LOGGER.info(f'URL: {request.url_root}')
 
         return user_info(user), 201
 
@@ -129,4 +132,4 @@ class VerifyEmailApi(Resource):
 
         LOGGER.debug(f'Email verified successfully for token: {token}')
 
-        return {}, 201
+        return {'message': 'Successfully verified email'}, 201

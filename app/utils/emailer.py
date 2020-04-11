@@ -32,5 +32,5 @@ def send_mail(recipient, subject, body_text='', body_html='', charset='UTF-8', m
             smtp.send_message(msg=msg)
 
     except Exception as e:
-        LOGGER.error('Exception {} while trying to send emal: {}, {} '.format(
-            e, traceback.format_exc()))
+        LOGGER.error(
+            f'Exception {e} while trying to send emal: {traceback.format_exc()}')

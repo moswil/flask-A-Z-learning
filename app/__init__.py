@@ -1,4 +1,6 @@
-from flask import Flask
+import tldextract
+
+from flask import Flask, request, g
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate, MigrateCommand
 from flask_script import Manager
@@ -9,17 +11,17 @@ import flask_login as login
 
 from app.utils.logger import Logger
 
-import config
+import config as app_configs
 
 app = Flask(__name__)
 if app.config.get('ENV') == 'production':
-    app.config.from_object(config.ProductionConfig)
+    app.config.from_object(app_configs.ProductionConfig)
 elif app.config.get('ENV') == 'staging':
-    app.config.from_object(config.StagingConfig)
+    app.config.from_object(app_configs.StagingConfig)
 elif app.config.get('ENV') == 'development':
-    app.config.from_object(config.DevelopmentConfig)
+    app.config.from_object(app_configs.DevelopmentConfig)
 else:
-    app.config.from_object(config.TestingConfig)
+    app.config.from_object(app_configs.TestingConfig)
 
 
 rest_api = restful.Api(app=app, prefix='/api/v1')
@@ -34,6 +36,38 @@ from app import routes  # noqa
 migrate = Migrate(app=app, db=db)
 manager = Manager(app=app)
 manager.add_command('db', MigrateCommand)
+
+# from app.organisation.resolver import OrganisationResolver  # noqa
+
+
+# def get_domain():
+#     # TODO: Remove this test-related hack!
+#     if app.config.get('ENV') == 'testing' and 'HTTP_ORIGIN' not in request.environ and 'HTTP_REFERER' not in request.environ:
+#         return 'org'
+
+#     origin = request.environ.get('HTTP_ORIGIN', '')
+#     if not origin:  # Try to get from Referer header
+#         origin = request.environ.get('HTTP_REFERER', '')
+#         LOGGER.debug(f'No ORIGIN header, falling back to Referer: {origin} ')
+
+#     if origin:
+#         domain = tldextract.extract(origin).domain
+#     else:
+#         LOGGER.warning('Could not determine origin domain')
+#         domain = ''
+
+#     return domain
+
+
+# @app.before_request
+# def populate_organisation():
+#     domain = get_domain()
+#     LOGGER.info(f'Origin Domain: {domain}')  # TODO: remove this after testing
+
+#     g.organisation = OrganisationResolver.resolve_from_domain(domain)
+
+
+# Flask Admin Config
 
 from app.users.models import User  # noqa
 
