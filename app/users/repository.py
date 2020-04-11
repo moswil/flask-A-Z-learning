@@ -13,3 +13,7 @@ class UserRepository:
     @staticmethod
     def get_by_email(email):
         return db.session.query(User).filter(func.lower(User.email) == func.lower(email)).first()
+
+    @staticmethod
+    def get_user_by_token(token):
+        return db.session.query(User).filter(User.verify_token == token).first()

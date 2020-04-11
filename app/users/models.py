@@ -28,6 +28,12 @@ class User(UserMixin, db.Model):
     def verify_password(self, password):
         return check_password_hash(self.password_hash, password)
 
+    def deactive(self):
+        self.active = False
+
+    def verify(self):
+        self.verified_email = True
+
     def update_email(self, new_email):
         self.verified_email = False
         self.verify_token = make_code()

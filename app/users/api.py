@@ -11,7 +11,7 @@ from app.users.repository import UserRepository as user_repository
 from app.utils.emailer import send_mail
 from app.utils.auth import admin_required, auth_required, generate_token
 from app.utils.errors import (
-    EMAIL_IN_USE, USER_NAME_IN_USE, USER_DELETED, EMAIL_NOT_VERIFIED, BAD_CREDENTIALS)
+    EMAIL_IN_USE, USER_NAME_IN_USE, USER_DELETED, EMAIL_NOT_VERIFIED, BAD_CREDENTIALS, EMAIL_VERIFY_CODE_NOT_VALID)
 
 
 VERIFY_EMAIL_BODY = """
@@ -110,3 +110,23 @@ class UsersAPI(Resource):
     def get(self):
         users = db.session.query(User).all()
         return self.users_schema.dump(users)
+
+
+class VerifyEmailApi(Resource):
+
+    def get(self):
+        token = request.args.get('token')
+
+        LOGGER.debug(f'Verifying email for token: {token}')
+
+        user = user_repository.get_user_by_token(token)
+        if not user:
+            LOGGER.debug(f'No user found for token: {token}')
+            return EMAIL_VERIFY_CODE_NOT_VALID
+
+        user.verify()
+        db.session.commit()
+
+        LOGGER.debug(f'Email verified successfully for token: {token}')
+
+        return {}, 201

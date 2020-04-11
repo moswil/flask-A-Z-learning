@@ -7,3 +7,5 @@ BAD_CREDENTIALS = (
 FORBIDDEN = ({'message': 'Access to this resource is forbidden'}, 403)
 USER_DELETED = ({'message': 'This account has been deleted'}, 404)
 EMAIL_NOT_VERIFIED = ({'message': 'The email address is not verified'}, 422)
+EMAIL_VERIFY_CODE_NOT_VALID = (
+    {'message': 'Valid code is required to verify email'}, 419)
