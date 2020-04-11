@@ -22,12 +22,7 @@ class User(UserMixin, db.Model):
 
     role_id = db.Column(db.Integer, db.ForeignKey('role.id'))
 
-    @property
-    def password(self):
-        raise AttributeError('password is not a readable property')
-
-    @password.setter
-    def password(self, password):
+    def set_password(self, password):
         self.password_hash = generate_password_hash(password)
 
     def verify_password(self, password):

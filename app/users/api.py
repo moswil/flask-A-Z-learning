@@ -47,6 +47,7 @@ class UserAPI(Resource):
 
     def post(self):
         user = self.user_schema.load(request.get_json())
+        user.set_password(user.password_hash)
 
         db.session.add(user)
 
@@ -97,6 +98,7 @@ class AuthenticationAPI(Resource):
                 LOGGER.debug(
                     f'Successful authentication for email: {user_data.email}')
                 return user_info(user)
+            return BAD_CREDENTIALS
         else:
             LOGGER.debug(f'User not found for {user_data.email}')
             return BAD_CREDENTIALS
